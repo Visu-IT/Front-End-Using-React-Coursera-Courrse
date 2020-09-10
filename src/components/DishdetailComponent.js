@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 import dateFormat from 'dateformat';
-class DishDetail extends Component {
-    renderDish(dish) {
+
+    function RenderDish({dish}) {
         if(dish != null){
             return(
                 <Card>
@@ -21,7 +21,7 @@ class DishDetail extends Component {
         }
     }
     
-    renderComments(dish){
+    function RenderComments({dish}){
         if(dish != null){
             const CommentSection=dish.comments.map((com)=>{
                 return(
@@ -46,16 +46,16 @@ class DishDetail extends Component {
         }
     }
 
-    render() {
-    if (this.props.dish != null) {
+    const DishDetail = (props) =>{
+    if (props.dish != null) {
         return (
             <div className="container">
                 <div className="row"> 
                     <div className="col-12 col-md-5 m-1">
-                        {this.renderDish(this.props.dish)}
+                        <RenderDish dish={props.dish}/>
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        {this.renderComments(this.props.dish)}
+                        <RenderComments dish={props.dish}/>
                     </div>
                 </div>
             </div>
@@ -67,6 +67,6 @@ class DishDetail extends Component {
         );
     }
     }
-}
+
 
 export default DishDetail;
