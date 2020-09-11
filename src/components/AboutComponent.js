@@ -2,37 +2,29 @@ import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-function RenderLeader({leaders}){
-    const LeaderSection = leaders.map((leader) => {
-        return (
-            <div key={leader.id} className="col-12 mt-5">
+function RenderLeader({leaders}){   
+    return (
+        <div key={leaders.id} className="col-12 mt-5">
                 <Media tag="li">
                   <Media left middle>
-                      <Media object src={leader.image} alt={leader.name} />
+                      <Media object src={leaders.image} alt={leaders.name} />
                   </Media>
                   <Media body className="ml-5">
-                    <Media heading>{leader.name}</Media>
-                    <p>{leader.designation}</p>
-                    <p>{leader.description}</p>
+                    <Media heading>{leaders.name}</Media>
+                    <p>{leaders.designation}</p>
+                    <p>{leaders.description}</p>
                   </Media>
                 </Media>
-              </div>
-        );
-       
-    });
-    return (
-        <div className="container">
-            <div className="row">
-              <Media list>
-                  {LeaderSection}
-              </Media>
-            </div>
-          </div>
+        </div>
     );
 }
 
-const About = (props) => {
-
+function About (props) {
+    const leaders = props.leaders.map((leader) => {
+        return (
+            <RenderLeader leaders={leader}/>
+            );
+        });
     return(
         <div className="container">
             <div className="row">
@@ -88,7 +80,9 @@ const About = (props) => {
                     <h2>Corporate Leadership</h2>
                 </div>
                 <div className="col-12">
-                    <RenderLeader leaders={props.leaders}/>
+                <Media list>
+                  {leaders}
+                </Media>   
                 </div>
             </div>
         </div>
