@@ -5,6 +5,7 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
 import dateFormat from 'dateformat';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -84,13 +85,19 @@ class CommentForm extends Component {
     function RenderDish({dish}) {
         if(dish != null){
             return(
-                <Card>
-                    <CardImg top src={baseUrl + dish.image} alt={dish.name} />
-                    <CardBody>
-                     <b><CardTitle>{dish.name}</CardTitle></b>
-                      <CardText>{dish.description}</CardText>
-                    </CardBody>
-                </Card>
+                <FadeTransform
+                in
+                transformProps={{
+                    exitTransform: 'scale(0.5) translateY(-50%)'
+                }}>
+            <Card>
+                <CardImg top src={baseUrl + dish.image} alt={dish.name} />
+                <CardBody>
+                    <CardTitle>{dish.name}</CardTitle>
+                    <CardText>{dish.description}</CardText>
+                </CardBody>
+            </Card>
+            </FadeTransform>
             );
         }
         else{
@@ -102,22 +109,26 @@ class CommentForm extends Component {
     
     function RenderComments({comments, postComment, dishId}) {
         if(comments != null){
-            const CommentSection=comments.map((com)=>{
+            const CommentSection=comments.map((com)=>{ 
                 return(
+                <Stagger in>
                   <ul key={com.id} className="list-unstyled">
-                    <li>{com.comment}</li>
-                    <li>-- {com.author} , {dateFormat(com.date,"mediumDate")}</li>
+                        <Fade in>
+                            <li>{com.comment}</li>
+                            <li>-- {com.author} , {dateFormat(com.date,"mediumDate")}</li>
+                        </Fade>
                   </ul>
+                </Stagger>
                 );
               });
-            
               return(
                 <div>
                     <h4>Comments</h4>
                     {CommentSection}
                     <CommentForm dishId={dishId} postComment={postComment} />
                 </div>
-              );   
+              );  
+               
         }
         else{
             return(
