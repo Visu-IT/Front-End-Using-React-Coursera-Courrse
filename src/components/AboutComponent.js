@@ -1,13 +1,18 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../shared/baseUrl';
+import { Stagger, Fade } from 'react-animation-components';
+import { Loading } from './LoadingComponent';
 
-function RenderLeader({leaders}){   
+function RenderLeader({leaders}){  
     return (
         <div key={leaders.id} className="col-12 mt-5">
+            <Stagger in>
+                <Fade in>
                 <Media tag="li">
                   <Media left middle>
-                      <Media object src={leaders.image} alt={leaders.name} />
+                      <Media object src={baseUrl + leaders.image} alt={leaders.name} />
                   </Media>
                   <Media body className="ml-5">
                     <Media heading>{leaders.name}</Media>
@@ -15,16 +20,37 @@ function RenderLeader({leaders}){
                     <p>{leaders.description}</p>
                   </Media>
                 </Media>
+                </Fade>
+            </Stagger>
         </div>
     );
 }
 
 function About (props) {
-    const leaders = props.leaders.map((leader) => {
-        return (
-            <RenderLeader leaders={leader}/>
-            );
-        });
+        const leaders = props.leaders.leaders.map((leader) => {
+            return (
+                <RenderLeader leaders={leader} />
+                );
+            });
+            if (props.leaders.isLoading) {
+                return(
+                    <div className="container">
+                        <div className="row">            
+                            <Loading />
+                        </div>
+                    </div>
+                );
+            }
+            else if (props.leaders.errMess) {
+                return(
+                    <div className="container">
+                        <div className="row">            
+                            <h4>{props.leaders.errMess}</h4>
+                        </div>
+                    </div>
+                );
+            }
+            else { 
     return(
         <div className="container">
             <div className="row">
@@ -88,5 +114,5 @@ function About (props) {
         </div>
     );
 }
-
+}
 export default About;    
